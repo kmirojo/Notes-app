@@ -5,25 +5,35 @@ const notesCtrl = {
         const notes = await NoteModel.find();
         res.json(notes)
     },
-    getNote: (req, res) => {
-        res.json({message: 'Seleted Note'})
+    getNote: async (req, res) => {
+        const note = await NoteModel.findById(req.params.id)
+        res.json(note);
     },
     createNote: async (req, res) => {
         const {title, content, date, author} = req.body;
         const newNote = new NoteModel({
-            title: title,
-            content: content,
-            date: date,
-            author: author
+            title,
+            content,
+            date,
+            author
         })
+        console.log(req.body);
         await newNote.save();
         res.json({ message: 'Note Saved' })
     },
-    updateNote: (req, res) => {
+    updateNote: async (req, res) => {
+        const {title, content, author} = req.body;
+        console.log(req.body);
+        await NoteModel.findOneAndUpdate({_id: req.params.id}, {
+            title,
+            author,
+            content
+        });        
         res.json({ message: 'Note Updated' })
     },
-    deleteNote: (req, res) => {
-        res.json({ message: 'Note Deleted' })
+    deleteNote: async (req, res) => {
+        await NoteModel.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Note Deleted' });
     }
 };
 

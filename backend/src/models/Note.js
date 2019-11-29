@@ -4,7 +4,7 @@ const noteSchema = new Schema({
     title: String,
     content: {
         type: String,
-        required: true
+        required: false
     },
     author: String,
     date: {
